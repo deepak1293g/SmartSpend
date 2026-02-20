@@ -28,8 +28,8 @@ const LandingPage: React.FC = () => {
     <div className="min-h-screen bg-slate-950 text-slate-200 overflow-x-hidden">
       {/* Fixed Navigation Bar */}
       <nav className={`fixed top-0 w-full z-[100] transition-all duration-500 border-b ${scrolled
-          ? 'bg-slate-950/70 backdrop-blur-xl border-white/10 py-4 shadow-2xl'
-          : 'bg-transparent border-transparent py-6'
+        ? 'bg-slate-950/70 backdrop-blur-xl border-white/10 py-4 shadow-2xl'
+        : 'bg-transparent border-transparent py-6'
         }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
@@ -47,10 +47,10 @@ const LandingPage: React.FC = () => {
             <button onClick={() => scrollToSection('intelligence')} className="text-xs font-black uppercase tracking-widest text-slate-400 hover:text-white transition-colors italic">AI Cognitive</button>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-4">
             <button
               onClick={() => navigate('/login')}
-              className="px-5 py-2.5 bg-indigo-600/10 border border-indigo-500/20 hover:bg-indigo-600/20 text-indigo-400 rounded-xl font-black text-[10px] md:text-xs uppercase tracking-widest transition-all italic"
+              className="px-5 py-2.5 bg-indigo-600/10 border border-indigo-500/20 hover:bg-indigo-600/20 text-indigo-400 rounded-xl font-black text-xs uppercase tracking-widest transition-all italic"
             >
               Portal Access
             </button>
