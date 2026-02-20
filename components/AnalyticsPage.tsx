@@ -105,7 +105,7 @@ const AnalyticsPage: React.FC<AnalyticsPageProps> = ({ transactions, currency })
                 <svg className="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
                 <p className="text-[10px] font-black uppercase tracking-[0.4em] text-indigo-400">Operational Liquidity</p>
               </div>
-              <h2 className="text-5xl md:text-6xl font-black italic tracking-tighter text-white">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black italic tracking-tighter text-white">
                 {config.symbol}{(stats.balance * config.rate).toLocaleString()}
               </h2>
             </div>
@@ -113,20 +113,20 @@ const AnalyticsPage: React.FC<AnalyticsPageProps> = ({ transactions, currency })
         </motion.div>
 
         {/* Secondary Metric Cards */}
-        <motion.div variants={itemVariants} className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <GlassCard className="border-l-4 border-l-emerald-500 bg-emerald-500/5 flex flex-col justify-center">
+        <motion.div variants={itemVariants} className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+          <GlassCard className="border-l-4 border-l-emerald-500 bg-emerald-500/5 flex flex-col justify-center p-4 md:p-6">
             <div className="flex items-center gap-2 mb-1">
               <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
               <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Total Inflow</p>
             </div>
-            <h3 className="text-3xl font-black text-emerald-400">{config.symbol}{(stats.totalInc * config.rate).toLocaleString()}</h3>
+            <h3 className="text-2xl md:text-3xl font-black text-emerald-400">{config.symbol}{(stats.totalInc * config.rate).toLocaleString()}</h3>
           </GlassCard>
-          <GlassCard className="border-l-4 border-l-rose-500 bg-rose-500/5 flex flex-col justify-center">
+          <GlassCard className="border-l-4 border-l-rose-500 bg-rose-500/5 flex flex-col justify-center p-4 md:p-6">
             <div className="flex items-center gap-2 mb-1">
               <svg className="w-4 h-4 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" /></svg>
               <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Total Outflow</p>
             </div>
-            <h3 className="text-3xl font-black text-rose-400">{config.symbol}{(stats.totalExp * config.rate).toLocaleString()}</h3>
+            <h3 className="text-2xl md:text-3xl font-black text-rose-400">{config.symbol}{(stats.totalExp * config.rate).toLocaleString()}</h3>
           </GlassCard>
         </motion.div>
       </div>
