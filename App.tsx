@@ -49,10 +49,19 @@ const App: React.FC = () => {
       }
     };
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      handleSetUser(session?.user);
-      setLoading(false);
-    });
+    supabase.auth.getSession()
+      .then(({ data: { session }, error }) => {
+        if (error) {
+          console.warn("Auth initialization notice:", error.message);
+        }
+        handleSetUser(session?.user);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.warn("Auth exception on load:", err);
+        handleSetUser(null);
+        setLoading(false);
+      });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       handleSetUser(session?.user);
