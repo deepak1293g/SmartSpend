@@ -571,40 +571,43 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
                 Enter a new secure password to protect your financial matrix.
               </p>
 
-              <div className="space-y-4 mb-8">
-                <div className="group">
-                  <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 px-1 transition-colors group-focus-within:text-indigo-400">
-                    New Password
-                  </label>
-                  <input
-                    type="password"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className="w-full bg-slate-950/40 border border-white/5 rounded-2xl px-5 py-4 text-sm text-white focus:border-indigo-500/50 focus:outline-none transition-all placeholder:text-slate-800"
-                  />
+              <form onSubmit={(e) => { e.preventDefault(); handleChangePassword(); }}>
+                <div className="space-y-4 mb-8">
+                  <div className="group">
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 px-1 transition-colors group-focus-within:text-indigo-400">
+                      New Password
+                    </label>
+                    <input
+                      type="password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      placeholder="••••••••"
+                      className="w-full bg-slate-950/40 border border-white/5 rounded-2xl px-4 py-3 md:px-5 md:py-4 text-xs md:text-sm text-white focus:border-indigo-500/50 focus:outline-none transition-all placeholder:text-slate-800"
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <div className="flex flex-col sm:flex-row gap-4">
-                <button
-                  onClick={() => {
-                    setShowPasswordModal(false);
-                    setNewPassword('');
-                  }}
-                  disabled={isUpdatingPassword}
-                  className="flex-1 px-6 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-white font-bold text-sm transition-colors disabled:opacity-50"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleChangePassword}
-                  disabled={isUpdatingPassword || !newPassword}
-                  className="flex-1 px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm transition-colors shadow-lg shadow-indigo-500/20 disabled:opacity-50 flex justify-center items-center"
-                >
-                  {isUpdatingPassword ? "Updating..." : "Confirm"}
-                </button>
-              </div>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowPasswordModal(false);
+                      setNewPassword('');
+                    }}
+                    disabled={isUpdatingPassword}
+                    className="flex-1 px-6 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-white font-bold text-sm transition-colors disabled:opacity-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isUpdatingPassword || !newPassword}
+                    className="flex-1 px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm transition-colors shadow-lg shadow-indigo-500/20 disabled:opacity-50 flex justify-center items-center"
+                  >
+                    {isUpdatingPassword ? "Updating..." : "Confirm"}
+                  </button>
+                </div>
+              </form>
             </motion.div>
           </motion.div>
         )}

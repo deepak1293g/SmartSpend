@@ -147,13 +147,13 @@ const AuthPage: React.FC<AuthPageProps> = ({ onToast }) => {
                             </AnimatePresence>
                             <button
                                 onClick={() => { setAuthView('signin'); setError(null); }}
-                                className={`flex-1 rounded-xl text-[10px] md:text-xs font-black uppercase tracking-widest relative z-10 py-3 md:py-4 transition-colors duration-300 ${authView === 'signin' ? 'text-white' : 'text-slate-500'}`}
+                                className={`flex-1 rounded-xl text-[9px] md:text-xs font-black uppercase tracking-widest relative z-10 py-2.5 md:py-4 transition-colors duration-300 ${authView === 'signin' ? 'text-white' : 'text-slate-500'}`}
                             >
                                 Sign In
                             </button>
                             <button
                                 onClick={() => { setAuthView('signup'); setError(null); }}
-                                className={`flex-1 rounded-xl text-[10px] md:text-xs font-black uppercase tracking-widest relative z-10 py-3 md:py-4 transition-colors duration-300 ${authView === 'signup' ? 'text-white' : 'text-slate-500'}`}
+                                className={`flex-1 rounded-xl text-[9px] md:text-xs font-black uppercase tracking-widest relative z-10 py-2.5 md:py-4 transition-colors duration-300 ${authView === 'signup' ? 'text-white' : 'text-slate-500'}`}
                             >
                                 Sign Up
                             </button>
@@ -169,7 +169,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ onToast }) => {
                                             required
                                             value={signinEmail}
                                             onChange={(e) => setSigninEmail(e.target.value)}
-                                            className="w-full bg-slate-950/40 border border-white/5 rounded-2xl px-5 md:px-6 py-3 md:py-4 text-sm md:text-base text-white focus:border-indigo-500/50 focus:outline-none transition-all placeholder:text-slate-800"
+                                            className="w-full bg-slate-950/40 border border-white/5 rounded-2xl px-4 md:px-6 py-2.5 md:py-4 text-xs md:text-base text-white focus:border-indigo-500/50 focus:outline-none transition-all placeholder:text-slate-800"
                                             placeholder="operator@matrix.net"
                                         />
                                     </div>
@@ -181,7 +181,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ onToast }) => {
                                                 required
                                                 value={signinPassword}
                                                 onChange={(e) => setSigninPassword(e.target.value)}
-                                                className="w-full bg-slate-950/40 border border-white/5 rounded-2xl px-5 md:px-6 py-3 md:py-4 pr-12 md:pr-14 text-sm md:text-base text-white focus:border-indigo-500/50 focus:outline-none transition-all placeholder:text-slate-800"
+                                                className="w-full bg-slate-950/40 border border-white/5 rounded-2xl px-4 md:px-6 py-2.5 md:py-4 pr-10 md:pr-14 text-xs md:text-base text-white focus:border-indigo-500/50 focus:outline-none transition-all placeholder:text-slate-800"
                                                 placeholder="••••••••"
                                             />
                                             <button
@@ -207,7 +207,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ onToast }) => {
                                             required
                                             value={signupEmail}
                                             onChange={(e) => setSignupEmail(e.target.value)}
-                                            className="w-full bg-slate-950/40 border border-white/5 rounded-2xl px-5 md:px-6 py-3 md:py-4 text-sm md:text-base text-white focus:border-indigo-500/50 focus:outline-none transition-all placeholder:text-slate-800"
+                                            className="w-full bg-slate-950/40 border border-white/5 rounded-2xl px-4 md:px-6 py-2.5 md:py-4 text-xs md:text-base text-white focus:border-indigo-500/50 focus:outline-none transition-all placeholder:text-slate-800"
                                             placeholder="operator@matrix.net"
                                         />
                                     </div>
@@ -219,7 +219,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ onToast }) => {
                                                 required
                                                 value={signupPassword}
                                                 onChange={(e) => setSignupPassword(e.target.value)}
-                                                className="w-full bg-slate-950/40 border border-white/5 rounded-2xl px-5 md:px-6 py-3 md:py-4 pr-12 md:pr-14 text-sm md:text-base text-white focus:border-indigo-500/50 focus:outline-none transition-all placeholder:text-slate-800"
+                                                className="w-full bg-slate-950/40 border border-white/5 rounded-2xl px-4 md:px-6 py-2.5 md:py-4 pr-10 md:pr-14 text-xs md:text-base text-white focus:border-indigo-500/50 focus:outline-none transition-all placeholder:text-slate-800"
                                                 placeholder="••••••••"
                                             />
                                             <button
@@ -256,7 +256,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ onToast }) => {
                                                     const val = e.target.value;
                                                     setSignupName(val.charAt(0).toUpperCase() + val.slice(1));
                                                 }}
-                                                className="w-full bg-slate-950/40 border border-white/5 rounded-2xl px-5 md:px-6 py-3 md:py-4 text-sm md:text-base text-white focus:border-indigo-500/50 focus:outline-none transition-all placeholder:text-slate-800"
+                                                className="w-full bg-slate-950/40 border border-white/5 rounded-2xl px-4 md:px-6 py-2.5 md:py-4 text-xs md:text-base text-white focus:border-indigo-500/50 focus:outline-none transition-all placeholder:text-slate-800"
                                                 placeholder="John Doe"
                                             />
                                         </div>
@@ -271,7 +271,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ onToast }) => {
                                                     maxLength={10}
                                                     value={authPhoneNumber}
                                                     onChange={(e) => setAuthPhoneNumber(e.target.value.replace(/\D/g, ''))}
-                                                    className="flex-1 bg-slate-950/40 border border-white/5 rounded-2xl px-5 md:px-6 py-3 md:py-4 text-sm md:text-base text-white focus:border-indigo-500/50 focus:outline-none transition-all placeholder:text-slate-800"
+                                                    className="flex-1 bg-slate-950/40 border border-white/5 rounded-2xl px-4 md:px-6 py-2.5 md:py-4 text-xs md:text-base text-white focus:border-indigo-500/50 focus:outline-none transition-all placeholder:text-slate-800"
                                                     placeholder="9876543210"
                                                 />
                                             </div>
@@ -296,7 +296,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ onToast }) => {
                             <button
                                 type="submit"
                                 disabled={authLoading}
-                                className="w-full bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 disabled:opacity-50 text-white font-black py-4 md:py-5 rounded-2xl md:rounded-[1.5rem] transition-all shadow-2xl shadow-indigo-600/30 uppercase tracking-[0.2em] text-xs md:text-sm italic"
+                                className="w-full bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 disabled:opacity-50 text-white font-black py-3.5 md:py-5 rounded-2xl md:rounded-[1.5rem] transition-all shadow-2xl shadow-indigo-600/30 uppercase tracking-[0.2em] text-[10px] md:text-sm italic"
                             >
                                 {authLoading ? 'Verifying...' : authView === 'signin' ? 'Sign In' : 'Sign Up'}
                             </button>
