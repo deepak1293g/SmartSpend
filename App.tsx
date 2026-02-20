@@ -51,14 +51,16 @@ const App: React.FC = () => {
 
     supabase.auth.getSession()
       .then(({ data: { session }, error }) => {
-        if (error) {
+        if (error && error.message !== 'Auth session missing!') {
           console.warn("Auth initialization notice:", error.message);
         }
         handleSetUser(session?.user);
         setLoading(false);
       })
       .catch((err) => {
-        console.warn("Auth exception on load:", err);
+        if (err.message !== 'Auth session missing!') {
+          console.warn("Auth exception on load:", err);
+        }
         handleSetUser(null);
         setLoading(false);
       });
