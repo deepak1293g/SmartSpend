@@ -178,9 +178,9 @@ const TransactionList: React.FC<TransactionListProps> = ({ transactions, currenc
     switch (category) {
       case 'Food & Dining':
         return (
-          // Hamburger icon
+          // Glass icon
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 14a2 2 0 012-2h12a2 2 0 012 2M4 14h16M4 14v2a2 2 0 002 2h12a2 2 0 002-2v-2M6 10a6 6 0 1112 0H6z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 5c-1.11 0-2 .89-2 2v9c0 .55-.45 1-1 1H6c-.55 0-1-.45-1-1V7c0-1.11-.89-2-2-2m6 16h6m-3-6v6" />
           </svg>
         );
       case 'Shopping':
