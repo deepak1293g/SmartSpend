@@ -46,18 +46,28 @@ const AnalyticsPage: React.FC<AnalyticsPageProps> = ({ transactions, currency })
     const totalInc = income.reduce((sum, t) => sum + t.amount, 0);
     const balance = totalInc - totalExp;
 
-    // Daily breakdown centering around today (starts 2 days ago)
-    const last7Days = Array.from({ length: 7 }, (_, i) => {
+    // 4 Days: Yesterday, Today, Next 2 Days
+    const dynamic4Days = Array.from({ length: 4 }, (_, i) => {
       const d = new Date();
-      d.setDate(d.getDate() - 2 + i); // Start from 2 days before today
+      d.setDate(d.getDate() - 1 + i); // Start from yesterday
       const dateStr = d.toISOString().split('T')[0];
       const dayInc = income.filter(t => t.date === dateStr).reduce((s, t) => s + t.amount, 0);
       const dayExp = expenses.filter(t => t.date === dateStr).reduce((s, t) => s + t.amount, 0);
+
+      let relativeLabel = '';
+      if (i === 0) relativeLabel = 'YESTERDAY';
+      else if (i === 1) relativeLabel = 'CURRENT';
+      else if (i === 2) relativeLabel = 'TMRW';
+      else if (i === 3) relativeLabel = 'NEXT';
+
       return {
         label: d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }),
+        relativeLabel,
+        date: dateStr,
         income: dayInc * config.rate,
         expense: dayExp * config.rate,
-        net: (dayInc - dayExp) * config.rate
+        net: (dayInc - dayExp) * config.rate,
+        isToday: i === 1
       };
     });
 
@@ -73,7 +83,7 @@ const AnalyticsPage: React.FC<AnalyticsPageProps> = ({ transactions, currency })
       };
     }).filter(item => item.spent > 0).sort((a, b) => b.spent - a.spent);
 
-    return { totalExp, totalInc, balance, last7Days, categoryStats };
+    return { totalExp, totalInc, balance, dynamic4Days, categoryStats };
   }, [transactions, config.rate]);
 
   const COLORS = ['#6366f1', '#8b5cf6', '#ec4899', '#f43f5e', '#f59e0b', '#10b981', '#06b6d4'];
@@ -148,7 +158,7 @@ const AnalyticsPage: React.FC<AnalyticsPageProps> = ({ transactions, currency })
           <GlassCard title="Financial Dynamics Ledger" className="h-full">
             <div className="h-[350px] w-full mt-6">
               <ResponsiveContainer width="100%" height="100%">
-                <ComposedChart data={stats.last7Days}>
+                <ComposedChart data={stats.dynamic4Days} margin={{ top: 10, right: 10, left: -25, bottom: 60 }}>
                   <defs>
                     <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="#6366f1" stopOpacity={0.4} />
@@ -156,7 +166,23 @@ const AnalyticsPage: React.FC<AnalyticsPageProps> = ({ transactions, currency })
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.03)" vertical={false} />
-                  <XAxis dataKey="label" stroke="#475569" fontSize={9} tickLine={false} axisLine={false} dy={10} />
+                  <XAxis
+                    dataKey="relativeLabel"
+                    stroke="#475569"
+                    fontSize={9}
+                    tickLine={false}
+                    axisLine={false}
+                    height={60}
+                    interval={0}
+                    tick={({ x, y, payload }) => {
+                      const isToday = payload.value === 'CURRENT';
+                      return (
+                        <text x={x} y={Number(y) + 35} fill={isToday ? "#6366f1" : "#475569"} fontSize={10} fontWeight={isToday ? "bold" : "normal"} textAnchor="middle">
+                          {payload.value}
+                        </text>
+                      );
+                    }}
+                  />
                   <YAxis stroke="#475569" fontSize={9} tickLine={false} axisLine={false} />
                   <Tooltip
                     contentStyle={{ backgroundColor: '#020617', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', boxShadow: '0 20px 50px rgba(0,0,0,0.5)' }}
@@ -168,22 +194,6 @@ const AnalyticsPage: React.FC<AnalyticsPageProps> = ({ transactions, currency })
                   <Bar dataKey="expense" barSize={8} fill="#f43f5e" radius={[10, 10, 0, 0]} />
                 </ComposedChart>
               </ResponsiveContainer>
-            </div>
-            {/* Quick Date Labels - Mobile Only */}
-            <div className="md:hidden grid grid-cols-4 gap-2 mt-4 pt-4 border-t border-white/5">
-              {[
-                { label: 'Yesterday', date: new Date(Date.now() - 86400000) },
-                { label: 'Current', date: new Date() },
-                { label: 'TMRW', date: new Date(Date.now() + 86400000) },
-                { label: 'Next', date: new Date(Date.now() + 172800000) }
-              ].map((d, i) => (
-                <div key={i} className={`text-center py-2 rounded-lg border ${i === 1 ? 'bg-indigo-500/10 border-indigo-500/30' : 'bg-slate-900/50 border-white/5'}`}>
-                  <p className={`text-[8px] font-black uppercase tracking-widest mb-1 ${i === 1 ? 'text-indigo-400' : 'text-slate-500'}`}>{d.label}</p>
-                  <p className={`text-[10px] font-bold ${i === 1 ? 'text-white' : 'text-slate-400'}`}>
-                    {d.date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}
-                  </p>
-                </div>
-              ))}
             </div>
           </GlassCard>
         </motion.div>
