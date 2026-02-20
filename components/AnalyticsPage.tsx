@@ -169,6 +169,22 @@ const AnalyticsPage: React.FC<AnalyticsPageProps> = ({ transactions, currency })
                 </ComposedChart>
               </ResponsiveContainer>
             </div>
+            {/* Quick Date Labels - Mobile Only */}
+            <div className="md:hidden grid grid-cols-4 gap-2 mt-4 pt-4 border-t border-white/5">
+              {[
+                { label: 'Yesterday', date: new Date(Date.now() - 86400000) },
+                { label: 'Current', date: new Date() },
+                { label: 'TMRW', date: new Date(Date.now() + 86400000) },
+                { label: 'Next', date: new Date(Date.now() + 172800000) }
+              ].map((d, i) => (
+                <div key={i} className={`text-center py-2 rounded-lg border ${i === 1 ? 'bg-indigo-500/10 border-indigo-500/30' : 'bg-slate-900/50 border-white/5'}`}>
+                  <p className={`text-[8px] font-black uppercase tracking-widest mb-1 ${i === 1 ? 'text-indigo-400' : 'text-slate-500'}`}>{d.label}</p>
+                  <p className={`text-[10px] font-bold ${i === 1 ? 'text-white' : 'text-slate-400'}`}>
+                    {d.date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}
+                  </p>
+                </div>
+              ))}
+            </div>
           </GlassCard>
         </motion.div>
 
