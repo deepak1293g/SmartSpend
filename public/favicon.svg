@@ -1,0 +1,42 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dark modern background base -->
+  <rect width="256" height="256" rx="64" fill="url(#paint0_linear)"/>
+  
+  <!-- Outer glowing ring -->
+  <circle cx="128" cy="128" r="96" stroke="url(#paint1_linear)" stroke-width="8" stroke-linecap="round"/>
+  
+  <!-- Abstract 'S' shaped financial curve -->
+  <path d="M158 84C158 84 148 74 128 74C102 74 94 88 94 102C94 128 162 126 162 154C162 172 152 182 128 182C106 182 96 170 96 170" stroke="url(#paint2_linear)" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Vertical accent line / currency symbol hint -->
+  <path d="M128 54V202" stroke="url(#paint3_linear)" stroke-width="24" stroke-linecap="round"/>
+  
+  <!-- Small upward trend dot / arrow hint -->
+  <circle cx="168" cy="64" r="16" fill="#34D399"/>
+
+  <defs>
+    <!-- Background Gradient (Deep Navy/Indigo) -->
+    <linearGradient id="paint0_linear" x1="0" y1="0" x2="256" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F172A"/>
+      <stop offset="1" stop-color="#1E1B4B"/>
+    </linearGradient>
+    
+    <!-- Ring Gradient (Soft Emerald to Indigo) -->
+    <linearGradient id="paint1_linear" x1="32" y1="32" x2="224" y2="224" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#10B981" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#6366F1" stop-opacity="0.5"/>
+    </linearGradient>
+
+    <!-- 'S' Curve Gradient (Vibrant Emerald to Teal) -->
+    <linearGradient id="paint2_linear" x1="94" y1="74" x2="162" y2="182" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#34D399"/>
+      <stop offset="1" stop-color="#2DD4BF"/>
+    </linearGradient>
+
+    <!-- Vertical Line Gradient (Vibrant Indigo to Purple) -->
+    <linearGradient id="paint3_linear" x1="128" y1="54" x2="128" y2="202" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#818CF8"/>
+      <stop offset="1" stop-color="#C084FC"/>
+    </linearGradient>
+  </defs>
+</svg>
