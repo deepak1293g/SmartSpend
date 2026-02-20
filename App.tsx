@@ -253,6 +253,7 @@ const App: React.FC = () => {
                 selectedCurrency={currency}
                 onCurrencyChange={setCurrency}
                 onUpdateName={handleUpdateNameInApp}
+                onToast={(msg, type) => setToast({ message: msg, type })}
               />
             </motion.div>
           } />

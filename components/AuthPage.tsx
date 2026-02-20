@@ -52,7 +52,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ onToast }) => {
                     console.error("Phone check error:", phoneCheckError);
                     // allow to proceed if RPC is missing, else they can't signup at all if they didn't run the SQL
                 } else if (phoneExists) {
-                    onToast("IDENTITY CLASH: This phone protocol is already active.", 'error');
+                    onToast("This phone number is already registered.", 'error');
                     throw new Error("Phone number already registered.");
                 }
 
@@ -69,17 +69,17 @@ const AuthPage: React.FC<AuthPageProps> = ({ onToast }) => {
 
                 if (error) {
                     if (error.message.toLowerCase().includes('already registered') || error.message.toLowerCase().includes('exists')) {
-                        onToast("IDENTITY CLASH: Email is already registered.", 'error');
+                        onToast("Email is already registered.", 'error');
                         throw new Error("Email is already registered.");
                     }
                     throw error;
                 }
 
                 if (data.session) {
-                    onToast("UPLINK ESTABLISHED: System access granted.", 'success');
+                    onToast("System access granted.", 'success');
                     // Session is created, App.tsx's onAuthStateChange will handle navigation via its /login redirect
                 } else {
-                    onToast("REGISTRY QUEUED: Please verify your email to activate link.", 'success');
+                    onToast("Please verify your email to activate link.", 'success');
                 }
             } else {
                 const { error } = await supabase.auth.signInWithPassword({
@@ -87,7 +87,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ onToast }) => {
                     password: signinPassword
                 });
                 if (error) throw error;
-                onToast("IDENTITY VERIFIED: Authorization complete.", 'success');
+                onToast("Authorization complete.", 'success');
             }
         } catch (err: any) {
             setError(err.message);

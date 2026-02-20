@@ -14,6 +14,7 @@ interface ProfilePageProps {
   selectedCurrency: CurrencyCode;
   onCurrencyChange: (currency: CurrencyCode) => void;
   onUpdateName?: (newName: string) => void;
+  onToast: (msg: string, type: 'success' | 'error') => void;
 }
 
 const ProfilePage: React.FC<ProfilePageProps> = ({
@@ -22,7 +23,8 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
   onClearData,
   selectedCurrency,
   onCurrencyChange,
-  onUpdateName
+  onUpdateName,
+  onToast
 }) => {
   const navigate = useNavigate();
   const [isDeleting, setIsDeleting] = useState(false);
@@ -36,6 +38,11 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
   const [saveLoading, setSaveLoading] = useState(false);
   const config = CURRENCY_CONFIG[selectedCurrency];
   const [showResetSuccessModal, setShowResetSuccessModal] = useState(false);
+
+  // New state variables for password change
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+  const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
 
   const totalSpent = transactions
     .filter(t => t.type === 'expense')
@@ -68,10 +75,30 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
       if (error) throw error;
       if (onUpdateName) onUpdateName(tempName);
       setIsEditingName(false);
+      onToast("Display name updated successfully", "success");
     } catch (err: any) {
-      alert("SYNC ERROR: " + err.message);
+      onToast(err.message, "error");
     } finally {
       setSaveLoading(false);
+    }
+  };
+
+  const handleChangePassword = async () => {
+    if (!newPassword || newPassword.length < 6) {
+      onToast("Password must be at least 6 characters.", "error");
+      return;
+    }
+    setIsUpdatingPassword(true);
+    try {
+      const { error } = await supabase.auth.updateUser({ password: newPassword });
+      if (error) throw error;
+      onToast("Password updated successfully", "success");
+      setShowPasswordModal(false);
+      setNewPassword('');
+    } catch (error: any) {
+      onToast(error.message, "error");
+    } finally {
+      setIsUpdatingPassword(false);
     }
   };
 
@@ -91,7 +118,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
       setShowDeleteModal(false);
       setShowDeleteSuccessModal(true);
     } catch (err: any) {
-      alert("Deletion failed: " + err.message + "\n\nMake sure the 'delete_user' RPC is created in your Supabase SQL Editor.");
+      onToast(err.message, "error");
     } finally {
       setIsDeletingProfile(false);
     }
@@ -258,7 +285,10 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
           </GlassCard>
 
           <GlassCard title="Security">
-            <button className="w-full text-left p-4 rounded-xl bg-white/5 border border-white/5 hover:border-indigo-500/30 transition-all flex items-center justify-between group">
+            <button
+              onClick={() => setShowPasswordModal(true)}
+              className="w-full text-left p-4 rounded-xl bg-white/5 border border-white/5 hover:border-indigo-500/30 transition-all flex items-center justify-between group"
+            >
               <div>
                 <p className="text-sm font-bold text-white uppercase italic">Change Access Code</p>
                 <p className="text-[10px] text-slate-500 font-bold uppercase">Update your login password</p>
@@ -507,6 +537,74 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
               >
                 Continue
               </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Change Password Modal */}
+      <AnimatePresence>
+        {showPasswordModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-slate-900 border border-indigo-500/30 rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl shadow-indigo-500/20"
+            >
+              <div className="w-16 h-16 bg-indigo-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg className="w-8 h-8 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+              </div>
+
+              <h3 className="text-xl font-black text-white text-center uppercase tracking-widest mb-2">
+                Update Access Code
+              </h3>
+
+              <p className="text-slate-400 text-sm text-center mb-6">
+                Enter a new secure password to protect your financial matrix.
+              </p>
+
+              <div className="space-y-4 mb-8">
+                <div className="group">
+                  <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 px-1 transition-colors group-focus-within:text-indigo-400">
+                    New Password
+                  </label>
+                  <input
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full bg-slate-950/40 border border-white/5 rounded-2xl px-5 py-4 text-sm text-white focus:border-indigo-500/50 focus:outline-none transition-all placeholder:text-slate-800"
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button
+                  onClick={() => {
+                    setShowPasswordModal(false);
+                    setNewPassword('');
+                  }}
+                  disabled={isUpdatingPassword}
+                  className="flex-1 px-6 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-white font-bold text-sm transition-colors disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleChangePassword}
+                  disabled={isUpdatingPassword || !newPassword}
+                  className="flex-1 px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm transition-colors shadow-lg shadow-indigo-500/20 disabled:opacity-50 flex justify-center items-center"
+                >
+                  {isUpdatingPassword ? "Updating..." : "Confirm"}
+                </button>
+              </div>
             </motion.div>
           </motion.div>
         )}
