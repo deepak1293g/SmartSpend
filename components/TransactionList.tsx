@@ -307,28 +307,30 @@ const TransactionList: React.FC<TransactionListProps> = ({ transactions, currenc
                     whileHover={{ x: 4 }}
                     className="group cursor-pointer"
                   >
-                    <GlassCard className="p-4 border-white/5 group-hover:border-indigo-500/30 transition-all bg-slate-900/40">
+                    <GlassCard className="p-3 md:p-4 border-white/5 group-hover:border-indigo-500/30 transition-all bg-slate-900/40">
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                          <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${t.type === 'income' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'
+                        <div className="flex items-center gap-2 md:gap-4">
+                          <div className={`w-8 h-8 md:w-12 md:h-12 rounded-lg md:rounded-xl flex items-center justify-center ${t.type === 'income' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'
                             }`}>
-                            {getCategoryIcon(t.category)}
+                            <div className="scale-75 md:scale-100">
+                              {getCategoryIcon(t.category)}
+                            </div>
                           </div>
                           <div>
-                            <h4 className="font-bold text-slate-200 group-hover:text-white transition-colors uppercase tracking-tight italic">
+                            <h4 className="font-bold text-xs md:text-base text-slate-200 group-hover:text-white transition-colors uppercase tracking-tight italic line-clamp-1">
                               {t.description}
                             </h4>
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                            <span className="text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-slate-500">
                               {t.category}
                             </span>
                           </div>
                         </div>
-                        <div className="text-right">
-                          <div className={`text-lg font-black italic tracking-tighter ${t.type === 'income' ? 'text-emerald-400' : 'text-slate-200'
+                        <div className="text-right pl-2">
+                          <div className={`text-sm md:text-lg font-black italic tracking-tighter ${t.type === 'income' ? 'text-emerald-400' : 'text-slate-200'
                             }`}>
                             {t.type === 'income' ? '+' : '-'} {config.symbol}{t.amount.toLocaleString(config.locale, { minimumFractionDigits: 2 })}
                           </div>
-                          <div className="text-[9px] font-bold uppercase tracking-widest text-slate-600">
+                          <div className="text-[8px] md:text-[9px] font-bold uppercase tracking-widest text-slate-600">
                             {new Date(t.created_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true })}
                           </div>
                         </div>
