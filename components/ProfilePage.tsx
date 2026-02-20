@@ -290,8 +290,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
               className="w-full text-left p-4 rounded-xl bg-white/5 border border-white/5 hover:border-indigo-500/30 transition-all flex items-center justify-between group"
             >
               <div>
-                <p className="text-sm font-bold text-white uppercase italic">Change Access Code</p>
-                <p className="text-[10px] text-slate-500 font-bold uppercase">Update your login password</p>
+                <p className="text-sm font-bold text-white">Update Password</p>
               </div>
               <svg className="w-5 h-5 text-slate-600 group-hover:text-indigo-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" /></svg>
             </button>
@@ -564,7 +563,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
               </div>
 
               <h3 className="text-xl font-black text-white text-center uppercase tracking-widest mb-2">
-                Update Access Code
+                Update Password
               </h3>
 
               <p className="text-slate-400 text-sm text-center mb-6">

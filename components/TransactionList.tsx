@@ -317,8 +317,8 @@ const TransactionList: React.FC<TransactionListProps> = ({ transactions, currenc
                             </div>
                           </div>
                           <div>
-                            <h4 className="font-bold text-xs md:text-base text-slate-200 group-hover:text-white transition-colors uppercase tracking-tight italic line-clamp-1">
-                              {t.description}
+                            <h4 className="font-bold text-xs md:text-base text-slate-200 group-hover:text-white transition-colors tracking-tight italic line-clamp-1">
+                              {t.description.charAt(0).toUpperCase() + t.description.slice(1)}
                             </h4>
                             <span className="text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-slate-500">
                               {t.category}

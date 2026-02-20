@@ -87,7 +87,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ onToast }) => {
                     password: signinPassword
                 });
                 if (error) throw error;
-                onToast("Authorization complete.", 'success');
+                onToast("Sign In successful.", 'success');
             }
         } catch (err: any) {
             setError(err.message);
