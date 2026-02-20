@@ -54,15 +54,8 @@ const AnalyticsPage: React.FC<AnalyticsPageProps> = ({ transactions, currency })
       const dayInc = income.filter(t => t.date === dateStr).reduce((s, t) => s + t.amount, 0);
       const dayExp = expenses.filter(t => t.date === dateStr).reduce((s, t) => s + t.amount, 0);
 
-      let relativeLabel = '';
-      if (i === 0) relativeLabel = 'YESTERDAY';
-      else if (i === 1) relativeLabel = 'CURRENT';
-      else if (i === 2) relativeLabel = 'TMRW';
-      else if (i === 3) relativeLabel = 'NEXT';
-
       return {
-        label: d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }),
-        relativeLabel,
+        label: d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }),
         date: dateStr,
         income: dayInc * config.rate,
         expense: dayExp * config.rate,
@@ -167,7 +160,7 @@ const AnalyticsPage: React.FC<AnalyticsPageProps> = ({ transactions, currency })
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.03)" vertical={false} />
                   <XAxis
-                    dataKey="relativeLabel"
+                    dataKey="label"
                     stroke="#475569"
                     fontSize={9}
                     tickLine={false}
@@ -175,7 +168,7 @@ const AnalyticsPage: React.FC<AnalyticsPageProps> = ({ transactions, currency })
                     height={60}
                     interval={0}
                     tick={({ x, y, payload }) => {
-                      const isToday = payload.value === 'CURRENT';
+                      const isToday = payload.value === stats.dynamic4Days[1].label;
                       return (
                         <text x={x} y={Number(y) + 35} fill={isToday ? "#6366f1" : "#475569"} fontSize={10} fontWeight={isToday ? "bold" : "normal"} textAnchor="middle">
                           {payload.value}
