@@ -46,11 +46,11 @@ const TypewriterBrand: React.FC<TypewriterBrandProps> = ({ className = "", large
 
   if (large) {
     return (
-      <div className={`flex flex-col ${className}`}>
-        <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-white uppercase italic leading-none pr-4">
+      <div className={`flex flex-row md:flex-col items-baseline md:items-start ${className}`}>
+        <h1 className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tighter text-white uppercase italic leading-none pr-1 md:pr-4">
           {smartPart}
         </h1>
-        <h1 className="text-5xl md:text-7xl font-black tracking-tighter uppercase italic leading-none flex items-center pr-6">
+        <h1 className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tighter uppercase italic leading-none flex items-center pr-6 md:pr-6">
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-white to-emerald-400">
             {spendPart}
           </span>

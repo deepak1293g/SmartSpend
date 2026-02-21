@@ -70,7 +70,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
     setSaveLoading(true);
     try {
       const { error } = await supabase.auth.updateUser({
-        data: { full_name: tempName }
+        data: { full_name: tempName, name: tempName }
       });
       if (error) throw error;
       if (onUpdateName) onUpdateName(tempName);
