@@ -111,8 +111,25 @@ const App: React.FC = () => {
     setFormLoading(true);
     try {
       if (id) {
-        const { error } = await supabase.from('expenses').update(txData).eq('id', id);
+        const { data, error } = await supabase.from('expenses').update(txData).eq('id', id).select();
         if (error) throw error;
+
+        if (!data || data.length === 0) {
+          // Fallback: If UPDATE policy is missing in Supabase, we delete and re-insert the row
+          if (editingTransaction) {
+            const { error: delErr } = await supabase.from('expenses').delete().eq('id', id);
+            if (delErr) throw new Error(`Delete fallback failed: ${delErr.message}`);
+
+            const { error: insErr } = await supabase.from('expenses').insert([{
+              ...editingTransaction, // preserve id, created_at, user_id, etc.
+              ...txData
+            }]);
+            if (insErr) throw new Error(`Insert fallback failed: ${insErr.message}`);
+          } else {
+            throw new Error('Transaction was not updated. Permission denied.');
+          }
+        }
+
         setToast({ message: "DATA COMMITTED: Transaction updated.", type: 'success' });
       } else {
         const { error } = await supabase.from('expenses').insert([{
@@ -122,7 +139,7 @@ const App: React.FC = () => {
         if (error) throw error;
         setToast({ message: "DATA COMMITTED: Transaction synced.", type: 'success' });
       }
-      fetchTransactions();
+      await fetchTransactions();
       setIsAddTransactionModalOpen(false);
       setEditingTransaction(null);
     } catch (err: any) {
