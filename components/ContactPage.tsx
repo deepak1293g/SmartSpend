@@ -113,8 +113,8 @@ const ContactPage: React.FC = () => {
                     animate="show"
                 >
                     <GlassCard className="h-full">
-                        <h3 className="text-2xl font-black text-white uppercase italic tracking-tighter mb-2">Initialize Communication</h3>
-                        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-8">Transmit direct message to HQ</p>
+                        <h3 className="text-2xl font-black text-white uppercase italic tracking-tighter mb-2">Message Us</h3>
+                        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-8">Transmit direct message to us</p>
 
                         {isSuccess ? (
                             <motion.div
@@ -132,7 +132,7 @@ const ContactPage: React.FC = () => {
                             <form onSubmit={handleSubmit} className="space-y-5">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                     <div>
-                                        <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 px-1">Operator Name</label>
+                                        <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 px-1">Your Name</label>
                                         <input
                                             type="text"
                                             name="name"
@@ -144,7 +144,7 @@ const ContactPage: React.FC = () => {
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 px-1">Comm Channel (Email)</label>
+                                        <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 px-1">Your Email</label>
                                         <input
                                             type="email"
                                             name="email"
@@ -186,7 +186,7 @@ const ContactPage: React.FC = () => {
                                 <button
                                     type="submit"
                                     disabled={isSubmitting}
-                                    className="w-full bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 disabled:opacity-50 text-white font-black py-4 rounded-xl transition-all shadow-xl shadow-indigo-600/30 uppercase tracking-widest italic flex items-center justify-center gap-3"
+                                    className="w-full bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 disabled:opacity-50 text-white font-black py-4 rounded-xl transition-all shadow-xl shadow-indigo-600/30 uppercase tracking-widest italic flex items-center justify-center gap-3 group"
                                 >
                                     {isSubmitting ? (
                                         <>
@@ -196,7 +196,7 @@ const ContactPage: React.FC = () => {
                                     ) : (
                                         <>
                                             <span>Transmit Message</span>
-                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
+                                            <svg className="w-5 h-5 transform transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
                                         </>
                                     )}
                                 </button>
