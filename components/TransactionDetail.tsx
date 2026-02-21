@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Transaction, CurrencyCode, CURRENCY_CONFIG } from '../types';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import GlassCard from './GlassCard';
 
 interface TransactionDetailProps {
@@ -12,6 +12,7 @@ interface TransactionDetailProps {
 }
 
 const TransactionDetail: React.FC<TransactionDetailProps> = ({ transaction, onClose, currency, onEdit, onDelete }) => {
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const config = CURRENCY_CONFIG[currency];
 
   const formatDate = (dateStr: string) => {
@@ -85,11 +86,7 @@ const TransactionDetail: React.FC<TransactionDetailProps> = ({ transaction, onCl
                 )}
                 {onDelete && (
                   <button
-                    onClick={() => {
-                      if (window.confirm('Are you sure you want to purge this transaction record?')) {
-                        onDelete(transaction.id);
-                      }
-                    }}
+                    onClick={() => setShowDeleteConfirm(true)}
                     className="p-2 md:p-3 bg-white/5 hover:bg-white/10 rounded-lg md:rounded-xl transition-colors text-slate-400 hover:text-rose-400"
                     title="Delete Transaction"
                   >
@@ -162,6 +159,52 @@ const TransactionDetail: React.FC<TransactionDetailProps> = ({ transaction, onCl
           </div>
         </GlassCard>
       </motion.div>
+
+      {/* Custom Delete Confirmation Modal */}
+      <AnimatePresence>
+        {showDeleteConfirm && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="bg-slate-900 border border-rose-500/30 rounded-3xl p-6 md:p-8 max-w-sm w-full shadow-2xl shadow-rose-500/20"
+            >
+              <div className="w-16 h-16 bg-rose-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg className="w-8 h-8 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+              </div>
+
+              <h3 className="text-xl font-black text-white text-center uppercase tracking-widest mb-2">Purge Entry?</h3>
+              <p className="text-slate-400 text-[10px] md:text-xs text-center mb-8 uppercase tracking-widest font-bold">
+                This transaction record will be permanently wiped from the secure ledger. This action cannot be undone.
+              </p>
+
+              <div className="flex flex-col gap-3">
+                <button
+                  onClick={() => {
+                    if (onDelete) onDelete(transaction.id);
+                    setShowDeleteConfirm(false);
+                  }}
+                  className="w-full px-6 py-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black uppercase tracking-widest text-xs transition-colors shadow-lg shadow-rose-500/20"
+                >
+                  Confirm Purge
+                </button>
+                <button
+                  onClick={() => setShowDeleteConfirm(false)}
+                  className="w-full px-6 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-black uppercase tracking-widest text-xs transition-colors"
+                >
+                  Cancel Action
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
