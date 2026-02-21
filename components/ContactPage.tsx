@@ -12,6 +12,8 @@ const ContactPage: React.FC = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
 
+    const [submitError, setSubmitError] = useState<string | null>(null);
+
     const container = {
         hidden: { opacity: 0 },
         show: {
@@ -35,18 +37,48 @@ const ContactPage: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
+        setSubmitError(null);
 
-        // Simulate network delay for effect
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        try {
+            const formDataObj = new FormData();
 
-        setIsSubmitting(false);
-        setIsSuccess(true);
-        setFormData({ name: '', email: '', subject: '', message: '' });
+            // Requires VITE_WEB3FORMS_ACCESS_KEY in .env.local
+            const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
 
-        // Reset success message after 5 seconds
-        setTimeout(() => {
-            setIsSuccess(false);
-        }, 5000);
+            if (!accessKey) {
+                throw new Error("Missing Web3Forms Access Key. Please configure VITE_WEB3FORMS_ACCESS_KEY.");
+            }
+
+            formDataObj.append('access_key', accessKey);
+            formDataObj.append('name', formData.name);
+            formDataObj.append('email', formData.email);
+            formDataObj.append('subject', formData.subject);
+            formDataObj.append('message', formData.message);
+
+            const response = await fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                body: formDataObj
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                setIsSuccess(true);
+                setFormData({ name: '', email: '', subject: '', message: '' });
+                // Reset success message after 5 seconds
+                setTimeout(() => {
+                    setIsSuccess(false);
+                }, 5000);
+            } else {
+                setSubmitError(data.message || "Failed to send message. Please try again.");
+                console.error("Web3Forms Error:", data);
+            }
+        } catch (error) {
+            console.error(error);
+            setSubmitError("Network error occurred. Please check your connection and try again.");
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -130,6 +162,17 @@ const ContactPage: React.FC = () => {
                             </motion.div>
                         ) : (
                             <form onSubmit={handleSubmit} className="space-y-5">
+                                {submitError && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: -10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        className="bg-rose-500/10 border border-rose-500/20 rounded-xl p-4 flex items-start gap-3"
+                                    >
+                                        <svg className="w-5 h-5 text-rose-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                        <p className="text-sm font-semibold text-rose-400">{submitError}</p>
+                                    </motion.div>
+                                )}
+
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                     <div>
                                         <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 px-1">Your Name</label>
