@@ -322,7 +322,7 @@ const App: React.FC = () => {
               transition={{ duration: 0.3 }}
             >
               <header className="mb-8 flex items-center justify-between">
-                <h2 className="text-2xl md:text-4xl font-black text-white tracking-tighter uppercase italic">HQ Communications</h2>
+                <h2 className="text-2xl md:text-4xl font-black text-white tracking-tighter uppercase italic">Chat With Us</h2>
               </header>
               <ContactPage />
             </motion.div>
