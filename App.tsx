@@ -25,6 +25,7 @@ const App: React.FC = () => {
   const [formLoading, setFormLoading] = useState(false);
   const [isAddTransactionModalOpen, setIsAddTransactionModalOpen] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
+  const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
   const [currency, setCurrency] = useState<CurrencyCode>('INR');
 
   const navigate = useNavigate();
@@ -106,21 +107,40 @@ const App: React.FC = () => {
     setToast({ message: "DISCONNECTED: Access revoked.", type: 'success' });
   };
 
-  const addTransaction = async (txData: any) => {
+  const handleTransactionSubmit = async (txData: any, id?: string) => {
     setFormLoading(true);
     try {
-      const { error } = await supabase.from('expenses').insert([{
-        ...txData,
-        user_id: user?.id
-      }]);
-      if (error) throw error;
+      if (id) {
+        const { error } = await supabase.from('expenses').update(txData).eq('id', id);
+        if (error) throw error;
+        setToast({ message: "DATA COMMITTED: Transaction updated.", type: 'success' });
+      } else {
+        const { error } = await supabase.from('expenses').insert([{
+          ...txData,
+          user_id: user?.id
+        }]);
+        if (error) throw error;
+        setToast({ message: "DATA COMMITTED: Transaction synced.", type: 'success' });
+      }
       fetchTransactions();
       setIsAddTransactionModalOpen(false);
-      setToast({ message: "DATA COMMITTED: Transaction synced.", type: 'success' });
+      setEditingTransaction(null);
     } catch (err: any) {
       setToast({ message: `SYNC ERROR: ${err.message}`, type: 'error' });
     } finally {
       setFormLoading(false);
+    }
+  };
+
+  const deleteTransaction = async (id: string) => {
+    try {
+      const { error } = await supabase.from('expenses').delete().eq('id', id);
+      if (error) throw error;
+      setTransactions(transactions.filter(t => t.id !== id));
+      setSelectedTransaction(null);
+      setToast({ message: "ENTRY PURGED: Transaction deleted.", type: 'success' });
+    } catch (err: any) {
+      setToast({ message: `PURGE FAILED: ${err.message}`, type: 'error' });
     }
   };
 
@@ -191,6 +211,12 @@ const App: React.FC = () => {
             transaction={selectedTransaction}
             onClose={() => setSelectedTransaction(null)}
             currency={currency}
+            onEdit={(t) => {
+              setSelectedTransaction(null);
+              setEditingTransaction(t);
+              setIsAddTransactionModalOpen(true);
+            }}
+            onDelete={deleteTransaction}
           />
         )}
       </AnimatePresence>
@@ -280,7 +306,10 @@ const App: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setIsAddTransactionModalOpen(false)}
+              onClick={() => {
+                setIsAddTransactionModalOpen(false);
+                setEditingTransaction(null);
+              }}
               className="absolute inset-0 bg-slate-950/90 backdrop-blur-xl"
             />
             <motion.div
@@ -291,16 +320,19 @@ const App: React.FC = () => {
             >
               <GlassCard className="p-6 md:p-8 border-white/10 shadow-[0_0_100px_rgba(0,0,0,0.8)] bg-slate-900/40">
                 <TransactionForm
-                  onAdd={addTransaction}
+                  onSubmit={handleTransactionSubmit}
                   loading={formLoading}
-                  onClose={() => setIsAddTransactionModalOpen(false)}
+                  onClose={() => {
+                    setIsAddTransactionModalOpen(false);
+                    setEditingTransaction(null);
+                  }}
+                  initialData={editingTransaction || undefined}
                 />
               </GlassCard>
             </motion.div>
           </div>
         )}
       </AnimatePresence>
-
 
     </div>
   );

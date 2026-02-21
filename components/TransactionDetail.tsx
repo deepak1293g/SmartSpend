@@ -7,9 +7,11 @@ interface TransactionDetailProps {
   transaction: Transaction;
   onClose: () => void;
   currency: CurrencyCode;
+  onEdit?: (t: Transaction) => void;
+  onDelete?: (id: string) => void;
 }
 
-const TransactionDetail: React.FC<TransactionDetailProps> = ({ transaction, onClose, currency }) => {
+const TransactionDetail: React.FC<TransactionDetailProps> = ({ transaction, onClose, currency, onEdit, onDelete }) => {
   const config = CURRENCY_CONFIG[currency];
 
   const formatDate = (dateStr: string) => {
@@ -68,12 +70,40 @@ const TransactionDetail: React.FC<TransactionDetailProps> = ({ transaction, onCl
                   <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 13l-5 5m0 0l-5-5m5 5V6" /></svg>
                 )}
               </div>
-              <button
-                onClick={onClose}
-                className="p-2 md:p-3 bg-white/5 hover:bg-white/10 rounded-lg md:rounded-xl transition-colors text-slate-400 hover:text-white"
-              >
-                <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" /></svg>
-              </button>
+              <div className="flex gap-2">
+                {onEdit && (
+                  <button
+                    onClick={() => {
+                      onClose();
+                      onEdit(transaction);
+                    }}
+                    className="p-2 md:p-3 bg-white/5 hover:bg-white/10 rounded-lg md:rounded-xl transition-colors text-slate-400 hover:text-indigo-400"
+                    title="Edit Transaction"
+                  >
+                    <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                  </button>
+                )}
+                {onDelete && (
+                  <button
+                    onClick={() => {
+                      if (window.confirm('Are you sure you want to purge this transaction record?')) {
+                        onDelete(transaction.id);
+                      }
+                    }}
+                    className="p-2 md:p-3 bg-white/5 hover:bg-white/10 rounded-lg md:rounded-xl transition-colors text-slate-400 hover:text-rose-400"
+                    title="Delete Transaction"
+                  >
+                    <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                  </button>
+                )}
+                <button
+                  onClick={onClose}
+                  className="p-2 md:p-3 bg-white/5 hover:bg-white/10 rounded-lg md:rounded-xl transition-colors text-slate-400 hover:text-white"
+                  title="Close Context"
+                >
+                  <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+              </div>
             </div>
 
             <div className="mb-6 md:mb-10">

@@ -1,33 +1,34 @@
 
 import React, { useState } from 'react';
-import { CATEGORIES, TransactionType } from '../types';
+import { CATEGORIES, TransactionType, Transaction } from '../types';
 import GlassCard from './GlassCard';
 import { motion } from 'framer-motion';
 
 interface TransactionFormProps {
-  onAdd: (data: any) => Promise<void>;
+  onSubmit: (data: any, id?: string) => Promise<void>;
   loading: boolean;
   onClose?: () => void;
+  initialData?: Transaction;
 }
 
-const TransactionForm: React.FC<TransactionFormProps> = ({ onAdd, loading, onClose }) => {
-  const [amount, setAmount] = useState('');
-  const [type, setType] = useState<TransactionType>('expense');
-  const [category, setCategory] = useState(CATEGORIES[0]);
-  const [description, setDescription] = useState('');
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+const TransactionForm: React.FC<TransactionFormProps> = ({ onSubmit, loading, onClose, initialData }) => {
+  const [amount, setAmount] = useState(initialData?.amount.toString() || '');
+  const [type, setType] = useState<TransactionType>(initialData?.type || 'expense');
+  const [category, setCategory] = useState(initialData?.category || CATEGORIES[0]);
+  const [description, setDescription] = useState(initialData?.description || '');
+  const [date, setDate] = useState(initialData?.date || new Date().toISOString().split('T')[0]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!amount || !description) return;
 
-    await onAdd({
+    await onSubmit({
       amount: parseFloat(amount),
       type,
       category,
       description,
       date
-    });
+    }, initialData?.id);
 
     setAmount('');
     setDescription('');
@@ -48,8 +49,8 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ onAdd, loading, onClo
       )}
 
       <div className="text-center mb-6">
-        <h3 className="text-2xl font-black text-white uppercase italic tracking-tighter">New Transaction</h3>
-        <p className="text-slate-500 text-[10px] font-bold uppercase tracking-[0.2em]">Record manual entry</p>
+        <h3 className="text-2xl font-black text-white uppercase italic tracking-tighter">{initialData ? 'Edit Transaction' : 'New Transaction'}</h3>
+        <p className="text-slate-500 text-[10px] font-bold uppercase tracking-[0.2em]">{initialData ? 'Modify ledger entry' : 'Record manual entry'}</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5">
@@ -119,7 +120,7 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ onAdd, loading, onClo
           disabled={loading}
           className="w-full bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 disabled:opacity-50 text-white font-black py-4 rounded-2xl transition-all shadow-xl shadow-indigo-600/30 uppercase tracking-widest italic"
         >
-          {loading ? 'Processing...' : 'Deploy Transaction'}
+          {loading ? 'Processing...' : (initialData ? 'Update Transaction' : 'Deploy Transaction')}
         </button>
       </form>
     </div>
