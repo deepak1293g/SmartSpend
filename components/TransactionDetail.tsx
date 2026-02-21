@@ -192,7 +192,7 @@ const TransactionDetail: React.FC<TransactionDetailProps> = ({ transaction, onCl
                   }}
                   className="w-full px-6 py-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black uppercase tracking-widest text-xs transition-colors shadow-lg shadow-rose-500/20"
                 >
-                  Confirm Purge
+                  Confirm Delete
                 </button>
                 <button
                   onClick={() => setShowDeleteConfirm(false)}

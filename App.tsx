@@ -104,7 +104,7 @@ const App: React.FC = () => {
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
-    setToast({ message: "DISCONNECTED: Access revoked.", type: 'success' });
+    setToast({ message: "Sign Out successfully", type: 'success' });
   };
 
   const handleTransactionSubmit = async (txData: any, id?: string) => {
@@ -130,14 +130,14 @@ const App: React.FC = () => {
           }
         }
 
-        setToast({ message: "DATA COMMITTED: Transaction updated.", type: 'success' });
+        setToast({ message: "Transaction updated.", type: 'success' });
       } else {
         const { error } = await supabase.from('expenses').insert([{
           ...txData,
           user_id: user?.id
         }]);
         if (error) throw error;
-        setToast({ message: "DATA COMMITTED: Transaction synced.", type: 'success' });
+        setToast({ message: "Transaction added.", type: 'success' });
       }
       await fetchTransactions();
       setIsAddTransactionModalOpen(false);
@@ -155,9 +155,9 @@ const App: React.FC = () => {
       if (error) throw error;
       setTransactions(transactions.filter(t => t.id !== id));
       setSelectedTransaction(null);
-      setToast({ message: "ENTRY PURGED: Transaction deleted.", type: 'success' });
+      setToast({ message: "Transaction deleted.", type: 'success' });
     } catch (err: any) {
-      setToast({ message: `PURGE FAILED: ${err.message}`, type: 'error' });
+      setToast({ message: `${err.message}`, type: 'error' });
     }
   };
 
@@ -166,9 +166,9 @@ const App: React.FC = () => {
       const { error } = await supabase.from('expenses').delete().eq('user_id', user?.id);
       if (error) throw error;
       setTransactions([]);
-      setToast({ message: "PURGE COMPLETE: Financial ledger cleared.", type: 'success' });
+      setToast({ message: "Transaction history cleared.", type: 'success' });
     } catch (err: any) {
-      setToast({ message: `PURGE FAILED: ${err.message}`, type: 'error' });
+      setToast({ message: `${err.message}`, type: 'error' });
     }
   };
 
