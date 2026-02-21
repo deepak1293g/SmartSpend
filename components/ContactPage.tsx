@@ -43,7 +43,7 @@ const ContactPage: React.FC = () => {
             const formDataObj = new FormData();
 
             // Requires VITE_WEB3FORMS_ACCESS_KEY in .env.local
-            const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
+            const accessKey = (import.meta as any).env.VITE_WEB3FORMS_ACCESS_KEY as string;
 
             if (!accessKey) {
                 throw new Error("Missing Web3Forms Access Key. Please configure VITE_WEB3FORMS_ACCESS_KEY.");
