@@ -100,14 +100,14 @@ const LandingPage: React.FC = () => {
           {/* Visual Elements Area */}
           <div className="relative group mt-8 lg:mt-0 px-4 md:px-0">
             {/* Floating Cards */}
-            <div className="hidden sm:block absolute -top-8 md:-top-12 -left-4 md:-left-8 z-20 animate-blob" style={{ animationDuration: '6s' }}>
+            <div className="absolute -top-4 sm:-top-8 md:-top-12 -left-2 sm:-left-4 md:-left-8 z-20 animate-blob scale-75 sm:scale-100 origin-top-left" style={{ animationDuration: '6s' }}>
               <div className="glass rounded-xl md:rounded-2xl p-3 md:p-5 border-l-4 border-l-emerald-500 shadow-2xl bg-slate-900/60 backdrop-blur-3xl border border-white/10">
                 <p className="text-[9px] md:text-[10px] text-slate-500 uppercase font-black tracking-widest mb-1">Inbound</p>
                 <p className="text-xl md:text-3xl font-black text-emerald-400 tracking-tighter">+₹12,450</p>
               </div>
             </div>
 
-            <div className="hidden sm:block absolute -bottom-6 md:-bottom-10 -right-4 md:-right-6 z-20 animate-blob animation-delay-2000" style={{ animationDuration: '8s' }}>
+            <div className="absolute -bottom-2 sm:-bottom-6 md:-bottom-10 -right-2 sm:-right-4 md:-right-6 z-20 animate-blob animation-delay-2000 scale-75 sm:scale-100 origin-bottom-right" style={{ animationDuration: '8s' }}>
               <div className="glass rounded-xl md:rounded-2xl p-3 md:p-5 border-l-4 border-l-rose-500 shadow-2xl bg-slate-900/60 backdrop-blur-3xl border border-white/10">
                 <p className="text-[9px] md:text-[10px] text-slate-500 uppercase font-black tracking-widest mb-1">Outbound</p>
                 <p className="text-xl md:text-3xl font-black text-rose-400 tracking-tighter">-₹2,142</p>
