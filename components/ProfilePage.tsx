@@ -314,7 +314,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
                 className="w-full py-4 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 text-rose-400 font-black uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-2"
               >
                 <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
-                {isDeleting ? "WIPING DATA..." : "Reset Financial Ledger"}
+                {isDeleting ? "WIPING DATA..." : "Reset Trasnaction History"}
               </button>
 
               <button
@@ -399,7 +399,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
                 <svg className="w-8 h-8 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
               </div>
 
-              <h3 className="text-xl font-black text-white text-center uppercase tracking-widest mb-2">Clear Ledger Data</h3>
+              <h3 className="text-xl font-black text-white text-center uppercase tracking-widest mb-2">Clear Transaction History</h3>
               <p className="text-slate-400 text-sm text-center mb-8">
                 Are you sure you want to permanently delete all your financial transaction history? This action cannot be undone.
               </p>
@@ -446,7 +446,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
 
               <h3 className="text-xl font-black text-white text-center uppercase tracking-widest mb-2">Ledger is Empty</h3>
               <p className="text-slate-400 text-sm text-center mb-8">
-                Your financial ledger is currently completely empty. There are no transactions to wipe.
+                Your Transaction History is currently completely empty. There are no transactions to wipe.
               </p>
 
               <button

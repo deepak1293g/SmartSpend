@@ -11,6 +11,7 @@ import LandingPage from './components/LandingPage';
 import AuthPage from './components/AuthPage';
 import ProfilePage from './components/ProfilePage';
 import AnalyticsPage from './components/AnalyticsPage';
+import ContactPage from './components/ContactPage';
 import MainLayout from './components/MainLayout';
 import Dashboard from './components/Dashboard';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -166,7 +167,7 @@ const App: React.FC = () => {
       const { error } = await supabase.from('expenses').delete().eq('user_id', user?.id);
       if (error) throw error;
       setTransactions([]);
-      setToast({ message: "Transaction history cleared.", type: 'success' });
+      setToast({ message: "Transaction History cleared.", type: 'success' });
     } catch (err: any) {
       setToast({ message: `${err.message}`, type: 'error' });
     }
@@ -309,6 +310,21 @@ const App: React.FC = () => {
                 onUpdateName={handleUpdateNameInApp}
                 onToast={(msg, type) => setToast({ message: msg, type })}
               />
+            </motion.div>
+          } />
+
+          <Route path="/contact" element={
+            <motion.div
+              key="contact"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <header className="mb-8 flex items-center justify-between">
+                <h2 className="text-2xl md:text-4xl font-black text-white tracking-tighter uppercase italic">HQ Communications</h2>
+              </header>
+              <ContactPage />
             </motion.div>
           } />
         </Route>
