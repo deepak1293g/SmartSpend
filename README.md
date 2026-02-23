@@ -2,6 +2,8 @@
 
 SmartSpend is a premium, AI-powered financial management application designed for high-performance expense tracking and predictive financial forecasting. Featuring a sleek, dark-mode glassmorphic interface, it brings state-of-the-art visual intelligence to your personal finances.
 
+![SmartSpend Landing](docs/images/landing.png)
+
 ![SmartSpend Signup](docs/images/signup.png)
 
 ## ✨ Key Features
