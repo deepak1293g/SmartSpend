@@ -4,8 +4,6 @@ SmartSpend is a premium, AI-powered financial management application designed fo
 
 ![SmartSpend Landing](docs/images/landing.png)
 
-![SmartSpend Signup](docs/images/signup.png)
-
 ## ✨ Key Features
 
 - **🤖 AI Financial Insights**: Automated analysis of your spending habits with personalized recommendations.
@@ -18,23 +16,19 @@ SmartSpend is a premium, AI-powered financial management application designed fo
 - **🔴 Contrast-Focused Ledger**: Outbound transactions are highlighted in red for instant spending recognition.
 - **📱 SEO & Social Ready**: Fully optimized for search engines and social sharing previews.
 
-## 🖼️ Visual Demo
+## 🖼️ Application Overview
 
-### Dashboard Overview
-The main command center featuring your balance summary and predictive dynamics.
-![Dashboard](docs/images/dashboard.png)
+### 🖥️ Dashboard
+The command center of your financial world. Monitor your total balance, view inbound/outbound forecasts, and get instant spend-category distributions at a glance.
 
-### In-Depth Analytics
-Deep-dive into your financial sectors with interactive ledger consistency.
-![Analytics](docs/images/analytics.png)
+### 📈 Analytics Intelligence
+Deep-dive into your financial trends. The analytics section provides a high-fidelity "Financial Dynamics Ledger" with bar-area hybrid charts to analyze your net position over time.
 
-### Transaction Ledger
-A high-precision, searchable history of all your financial movements.
-![Transactions](docs/images/transactions.png)
+### 📝 Transaction Ledger
+A high-precision history of every financial movement. Search, filter by month/year, and exported detailed PDF reports of your financial activity.
 
-### Financial Summary
-Get a high-level view of your total wealth status.
-![Summary](docs/images/summary.png)
+### 🔐 Secure Access
+A dedicated portal with streamlined Sign-In and Sign-Up flows, ensuring your financial intelligence remains private and protected.
 
 ## 🛠️ Tech Stack
 
@@ -42,6 +36,7 @@ Get a high-level view of your total wealth status.
 - **Styling**: Tailwind CSS + Custom Glassmorphism
 - **Animations**: Framer Motion
 - **Charts**: Recharts
+- **Intelligence**: Google Gemini AI Integration
 - **Backend**: Supabase (PostgreSQL)
 - **Deployment**: Vercel
 
@@ -69,6 +64,7 @@ Get a high-level view of your total wealth status.
    VITE_SUPABASE_URL=your_supabase_url
    VITE_SUPABASE_ANON_KEY=your_supabase_key
    VITE_GEMINI_API_KEY=your_gemini_key
+   VITE_SUPABASE_JWT_SECRET=your_secret
    ```
 
 4. Launch the development server:
