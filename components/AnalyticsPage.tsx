@@ -26,6 +26,7 @@ interface AnalyticsPageProps {
 
 const AnalyticsPage: React.FC<AnalyticsPageProps> = ({ transactions, currency }) => {
   const config = CURRENCY_CONFIG[currency];
+  const [daysRange, setDaysRange] = React.useState<5 | 'forecast'>('forecast');
 
   const BUDGET_LIMITS: Record<string, number> = {
     'Food & Dining': 5000,
@@ -46,10 +47,16 @@ const AnalyticsPage: React.FC<AnalyticsPageProps> = ({ transactions, currency })
     const totalInc = income.reduce((sum, t) => sum + t.amount, 0);
     const balance = totalInc - totalExp;
 
-    // 4 Days: Yesterday, Today, Next 2 Days
-    const dynamic4Days = Array.from({ length: 4 }, (_, i) => {
+    // Dynamic Range: either Forecast (5 days) or Last 5 Days
+    const rangeLength = 5;
+    const dynamicDays = Array.from({ length: rangeLength }, (_, i) => {
       const d = new Date();
-      d.setDate(d.getDate() - 1 + i); // Start from yesterday
+      if (daysRange === 'forecast') {
+        d.setDate(d.getDate() - 2 + i); // Forecast: 2 days before to 2 days after today
+      } else {
+        d.setDate(d.getDate() - 4 + i); // Last 5 Days: 4 days ago to today
+      }
+
       const dateStr = d.toISOString().split('T')[0];
       const dayInc = income.filter(t => t.date === dateStr).reduce((s, t) => s + t.amount, 0);
       const dayExp = expenses.filter(t => t.date === dateStr).reduce((s, t) => s + t.amount, 0);
@@ -60,7 +67,7 @@ const AnalyticsPage: React.FC<AnalyticsPageProps> = ({ transactions, currency })
         income: dayInc * config.rate,
         expense: dayExp * config.rate,
         net: (dayInc - dayExp) * config.rate,
-        isToday: i === 1
+        isToday: (daysRange === 'forecast' && i === 2) || (daysRange === 5 && i === 4)
       };
     });
 
@@ -76,8 +83,8 @@ const AnalyticsPage: React.FC<AnalyticsPageProps> = ({ transactions, currency })
       };
     }).filter(item => item.spent > 0).sort((a, b) => b.spent - a.spent);
 
-    return { totalExp, totalInc, balance, dynamic4Days, categoryStats };
-  }, [transactions, config.rate]);
+    return { totalExp, totalInc, balance, dynamicDays, categoryStats };
+  }, [transactions, config.rate, daysRange]);
 
   const COLORS = ['#6366f1', '#8b5cf6', '#ec4899', '#f43f5e', '#f59e0b', '#10b981', '#06b6d4'];
 
@@ -149,44 +156,71 @@ const AnalyticsPage: React.FC<AnalyticsPageProps> = ({ transactions, currency })
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <motion.div variants={itemVariants} className="lg:col-span-2">
           <GlassCard title="Financial Dynamics Ledger" className="h-full">
-            <div className="h-[350px] w-full mt-6">
-              <ResponsiveContainer width="100%" height="100%">
-                <ComposedChart data={stats.dynamic4Days} margin={{ top: 10, right: 10, left: -25, bottom: 60 }}>
-                  <defs>
-                    <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#6366f1" stopOpacity={0.4} />
-                      <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.03)" vertical={false} />
-                  <XAxis
-                    dataKey="label"
-                    stroke="#475569"
-                    fontSize={9}
-                    tickLine={false}
-                    axisLine={false}
-                    height={60}
-                    interval={0}
-                    tick={({ x, y, payload }) => {
-                      const isToday = payload.value === stats.dynamic4Days[1].label;
-                      return (
-                        <text x={x} y={Number(y) + 35} fill={isToday ? "#6366f1" : "#475569"} fontSize={10} fontWeight={isToday ? "bold" : "normal"} textAnchor="middle">
-                          {payload.value}
-                        </text>
-                      );
-                    }}
-                  />
-                  <YAxis stroke="#475569" fontSize={9} tickLine={false} axisLine={false} />
-                  <Tooltip
-                    contentStyle={{ backgroundColor: '#020617', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', boxShadow: '0 20px 50px rgba(0,0,0,0.5)' }}
-                    itemStyle={{ fontSize: '11px', fontWeight: '900', textTransform: 'uppercase', color: '#fff' }}
-                    labelStyle={{ fontSize: '10px', color: '#6366f1', marginBottom: '4px', fontWeight: 'bold' }}
-                  />
-                  <Area type="monotone" dataKey="net" fill="url(#areaGrad)" stroke="#6366f1" strokeWidth={4} dot={{ r: 4, fill: '#6366f1' }} />
-                  <Bar dataKey="income" barSize={8} fill="#10b981" radius={[10, 10, 0, 0]} />
-                  <Bar dataKey="expense" barSize={8} fill="#f43f5e" radius={[10, 10, 0, 0]} />
-                </ComposedChart>
-              </ResponsiveContainer>
+            <div className="flex flex-col h-full">
+              <div className="flex items-center gap-2 bg-slate-950/50 p-1 rounded-xl border border-white/5 w-fit mb-4">
+                {[
+                  { id: 'forecast', label: 'Forecast' },
+                  { id: 5, label: 'Last 5 Days' }
+                ].map((range) => (
+                  <button
+                    key={range.id}
+                    onClick={() => setDaysRange(range.id as any)}
+                    className={`px-3 py-1.5 text-[9px] font-black uppercase tracking-widest rounded-lg transition-all ${daysRange === range.id
+                      ? 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/20 shadow-[0_0_20px_rgba(99,102,241,0.2)]'
+                      : 'text-slate-500 hover:text-slate-300 hover:bg-white/5 border border-transparent'
+                      }`}
+                  >
+                    {range.label}
+                  </button>
+                ))}
+              </div>
+
+              <div className="h-[350px] w-full mt-2">
+                <ResponsiveContainer width="100%" height="100%">
+                  <ComposedChart data={stats.dynamicDays} margin={{ top: 10, right: 30, left: 30, bottom: 15 }}>
+                    <defs>
+                      <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#6366f1" stopOpacity={0.4} />
+                        <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.03)" vertical={false} />
+                    <XAxis
+                      dataKey="label"
+                      stroke="#475569"
+                      fontSize={9}
+                      tickLine={false}
+                      axisLine={false}
+                      height={20}
+                      interval={0}
+                      tick={({ x, y, payload }) => {
+                        const dayData = stats.dynamicDays.find(d => d.label === payload.value);
+                        const isToday = dayData?.isToday;
+                        return (
+                          <text
+                            x={x} y={Number(y) + 12}
+                            fill={isToday ? "#6366f1" : "#475569"}
+                            fontSize={9}
+                            fontWeight={isToday ? "bold" : "normal"}
+                            textAnchor="middle"
+                          >
+                            {payload.value}
+                          </text>
+                        );
+                      }}
+                    />
+                    <YAxis stroke="#475569" fontSize={9} tickLine={false} axisLine={false} />
+                    <Tooltip
+                      contentStyle={{ backgroundColor: '#020617', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', boxShadow: '0 20px 50px rgba(0,0,0,0.5)' }}
+                      itemStyle={{ fontSize: '11px', fontWeight: '900', textTransform: 'uppercase', color: '#fff' }}
+                      labelStyle={{ fontSize: '10px', color: '#6366f1', marginBottom: '4px', fontWeight: 'bold' }}
+                    />
+                    <Area type="monotone" dataKey="net" fill="url(#areaGrad)" stroke="#6366f1" strokeWidth={4} dot={{ r: 4.5, fill: '#6366f1', strokeWidth: 2, stroke: '#020617' }} activeDot={{ r: 6, strokeWidth: 0 }} />
+                    <Bar dataKey="income" barSize={8} fill="#10b981" radius={[10, 10, 0, 0]} />
+                    <Bar dataKey="expense" barSize={8} fill="#f43f5e" radius={[10, 10, 0, 0]} />
+                  </ComposedChart>
+                </ResponsiveContainer>
+              </div>
             </div>
           </GlassCard>
         </motion.div>

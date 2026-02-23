@@ -350,7 +350,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ transactions, currenc
                           </div>
                         </div>
                         <div className="text-right pl-2">
-                          <div className={`text-sm md:text-lg font-black italic tracking-tighter ${t.type === 'income' ? 'text-emerald-400' : 'text-slate-200'
+                          <div className={`text-sm md:text-lg font-black italic tracking-tighter ${t.type === 'income' ? 'text-emerald-400' : 'text-rose-400'
                             }`}>
                             {t.type === 'income' ? '+' : '-'} {config.symbol}{t.amount.toLocaleString(config.locale, { minimumFractionDigits: 2 })}
                           </div>

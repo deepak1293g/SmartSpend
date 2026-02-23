@@ -22,7 +22,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ onToast }) => {
 
     const handleAuth = async () => {
         if (!email || !password) {
-            setError(`Email and Access Key are required for ${authView === 'signin' ? 'sign in' : 'registry'}.`);
+            setError(`${authView === 'signin' ? 'Phone/Email' : 'Email'} and Access Key are required for ${authView === 'signin' ? 'sign in' : 'registry'}.`);
             return;
         }
 
@@ -76,10 +76,17 @@ const AuthPage: React.FC<AuthPageProps> = ({ onToast }) => {
                     onToast("Please verify your email to activate link.", 'success');
                 }
             } else {
-                const { error } = await supabase.auth.signInWithPassword({
-                    email: email,
-                    password: password
-                });
+                // Check if input is a 10-digit phone number
+                const isPhone = /^\d{10}$/.test(email.trim());
+
+                let authParams: any = { password: password };
+                if (isPhone) {
+                    authParams.phone = `${authCountryCode}${email.trim()}`;
+                } else {
+                    authParams.email = email.trim();
+                }
+
+                const { error } = await supabase.auth.signInWithPassword(authParams);
                 if (error) throw error;
                 onToast("Sign In successful.", 'success');
             }
