@@ -36,7 +36,6 @@ Get a high-level view of your total wealth status.
 - **Styling**: Tailwind CSS + Custom Glassmorphism
 - **Animations**: Framer Motion
 - **Charts**: Recharts
-- **Intelligence**: Google Gemini AI Integration
 - **Backend**: Supabase (PostgreSQL)
 - **Deployment**: Vercel
 
